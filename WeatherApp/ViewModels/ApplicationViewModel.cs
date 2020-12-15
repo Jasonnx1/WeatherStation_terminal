@@ -1,7 +1,10 @@
 ﻿using Ookii.Dialogs.Wpf;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Windows;
 using WeatherApp.Commands;
 using WeatherApp.Services;
 
@@ -19,6 +22,8 @@ namespace WeatherApp.ViewModels
 
         private VistaSaveFileDialog saveFileDialog;
         private VistaOpenFileDialog openFileDialog;
+
+        
 
         #endregion
 
@@ -54,17 +59,21 @@ namespace WeatherApp.ViewModels
         /// Commande pour changer la page à afficher
         /// </summary>
         public DelegateCommand<string> ChangePageCommand { get; set; }
+        public DelegateCommand<string> ChangeLanguageCommand { get; set; }
+
+        public DelegateCommand<string> ImportCommand { get; set; }
+        public DelegateCommand<string> ExportCommand { get; set; }
 
         /// <summary>
-        /// TODO 02 : Ajouter ImportCommand
+        /// TODO 02 : COMPLETED Ajouter ImportCommand
         /// </summary>
 
         /// <summary>
-        /// TODO 02 : Ajouter ExportCommand
+        /// TODO 02 : COMPLETED Ajouter ExportCommand
         /// </summary>
 
         /// <summary>
-        /// TODO 13a : Ajouter ChangeLanguageCommand
+        /// TODO 13a : COMPLETED Ajouter ChangeLanguageCommand
         /// </summary>
 
 
@@ -81,6 +90,7 @@ namespace WeatherApp.ViewModels
         public ApplicationViewModel()
         {
             ChangePageCommand = new DelegateCommand<string>(ChangePage);
+            ChangeLanguageCommand = new DelegateCommand<string>(ChangeLanguage);
 
             /// TODO 06 : Instancier ExportCommand qui doit appeler la méthode Export
             /// Ne peut s'exécuter que la méthode CanExport retourne vrai
@@ -96,6 +106,40 @@ namespace WeatherApp.ViewModels
         }
 
         #region Méthodes
+
+        private void ChangeLanguage(string o)
+        {
+            if (  !(String.Compare(o, WeatherApp.Properties.Settings.Default.Lang) == 0) )
+            {
+                WeatherApp.Properties.Settings.Default.Lang = o;
+                WeatherApp.Properties.Settings.Default.Save();
+
+
+                if (String.Compare(o, "fr") == 0)
+                {
+                    if ((MessageBox.Show(WeatherApp.Properties.Resources.msg_restart, WeatherApp.Properties.Resources.wn_warning, MessageBoxButton.YesNo) == MessageBoxResult.Yes))
+                    {
+                        var filename = Application.ResourceAssembly.Location;
+                        var newFile = Path.ChangeExtension(filename, ".exe");
+                        Process.Start(newFile);
+                        Application.Current.Shutdown();
+                    }
+                }
+                else
+                {
+                    if ((MessageBox.Show(WeatherApp.Properties.Resources.msg_restart, WeatherApp.Properties.Resources.wn_warning, MessageBoxButton.YesNo) == MessageBoxResult.Yes))
+                    {
+                        var filename = Application.ResourceAssembly.Location;
+                        var newFile = Path.ChangeExtension(filename, ".exe");
+                        Process.Start(newFile);
+                        Application.Current.Shutdown();
+                    }
+                }
+
+
+
+            }
+        }
         void initViewModels()
         {
             /// TemperatureViewModel setup
@@ -233,13 +277,6 @@ namespace WeatherApp.ViewModels
             ///   Garder le nom du fichier dans Filename
             ///   Appeler la méthode openFromFile
 
-        }
-
-        private void ChangeLanguage (string language)
-        {
-            /// TODO 13c : Compléter la méthode pour permettre de changer la langue
-            /// Ne pas oublier de demander à l'utilisateur de redémarrer l'application
-            /// Aide : ApiConsumerDemo
         }
 
         #endregion
