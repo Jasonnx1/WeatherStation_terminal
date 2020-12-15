@@ -28,8 +28,8 @@
             <MenuItem Header="{x:Static p:Resources.mi_file}">
                 <MenuItem Header="{x:Static p:Resources.mi_title}" Command="{Binding ChangePageCommand}" CommandParameter="TemperatureViewModel"/>
                 <MenuItem Header="{x:Static p:Resources.mi_preferences}" Command="{Binding ChangePageCommand}" CommandParameter="ConfigurationViewModel"/>
-                <MenuItem Header="{x:Static p:Resources.mi_import}"/>
-                <MenuItem Header="{x:Static p:Resources.mi_export}"/>
+                <MenuItem Header="{x:Static p:Resources.mi_import}" Command="{Binding ImportCommand}"/>
+                <MenuItem Header="{x:Static p:Resources.mi_export}" Command="{Binding ExportCommand}"/>
                 <Separator />
                 <!-- TODO 10 : Ajouter Importer et exporter -->
             </MenuItem>

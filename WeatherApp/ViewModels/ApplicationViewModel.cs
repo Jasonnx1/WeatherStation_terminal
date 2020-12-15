@@ -91,13 +91,15 @@ namespace WeatherApp.ViewModels
         {
             ChangePageCommand = new DelegateCommand<string>(ChangePage);
             ChangeLanguageCommand = new DelegateCommand<string>(ChangeLanguage);
+            ImportCommand = new DelegateCommand<string>(Import);
+            ExportCommand = new DelegateCommand<string>(Export, CanExport);
 
-            /// TODO 06 : Instancier ExportCommand qui doit appeler la méthode Export
+            /// TODO 06 : COMPLETED Instancier ExportCommand qui doit appeler la méthode Export
             /// Ne peut s'exécuter que la méthode CanExport retourne vrai
 
-            /// TODO 03 : Instancier ImportCommand qui doit appeler la méthode Import
+            /// TODO 03 : COMPLETED Instancier ImportCommand qui doit appeler la méthode Import
 
-            /// TODO 13b : Instancier ChangeLanguageCommand qui doit appeler la méthode ChangeLanguage
+            /// TODO 13b : COMPLETED Instancier ChangeLanguageCommand qui doit appeler la méthode ChangeLanguage
 
             initViewModels();          
 
@@ -193,7 +195,7 @@ namespace WeatherApp.ViewModels
         /// <returns></returns>
         private bool CanExport(string obj)
         {
-            throw new NotImplementedException();
+            return true;
         }
 
         /// <summary>
@@ -210,7 +212,14 @@ namespace WeatherApp.ViewModels
                 saveFileDialog.DefaultExt = "json";
             }
 
-            /// TODO 08 : Code pour afficher la boîte de dialogue de sauvegarde
+
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                Filename = saveFileDialog.FileName;
+                saveToFile();
+            }
+
+            /// TODO 08 : COMPLETED Code pour afficher la boîte de dialogue de sauvegarde
             /// Voir
             /// Solution : 14_pratique_examen
             /// Projet : demo_openFolderDialog
@@ -267,7 +276,13 @@ namespace WeatherApp.ViewModels
                 openFileDialog.DefaultExt = "json";
             }
 
-            /// TODO 04 : Commande d'importation : Code pour afficher la boîte de dialogue
+            if (openFileDialog.ShowDialog() == true)
+            {
+                Filename = openFileDialog.FileName;
+                openFromFile();
+            }
+
+            /// TODO 04 : COMPLETED Commande d'importation : Code pour afficher la boîte de dialogue
             /// Voir
             /// Solution : 14_pratique_examen
             /// Projet : demo_openFolderDialog
